@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -273,35 +274,60 @@ with res_col4:
         f"{int(botellas_anio):,} botellas"
     )
 
+# =====================================================
+# 5.1 GRÁFICA MEJORADA
+# =====================================================
+
 if botellas_anio > 0:
+
     df_grafica = pd.DataFrame({
         "Periodo": ["Por ducha", "Por semana", "Por mes", "Por año"],
         "Costo_MXN": [
-            costo_ducha, costo_semana, costo_mes, costo_anio
+            costo_ducha,
+            costo_semana,
+            costo_mes,
+            costo_anio
         ],
         "Botellas": [
-            botellas_ducha, botellas_semana,
-            botellas_mes, botellas_anio
+            botellas_ducha,
+            botellas_semana,
+            botellas_mes,
+            botellas_anio
         ]
     })
 
+    st.markdown("### 📊 Comparación del desperdicio")
+    st.caption(
+        "Costo equivalente del agua desperdiciada según el periodo."
+    )
+
     chart = alt.Chart(df_grafica).mark_bar(
+        cornerRadiusEnd=8,
+        height=28,
         color="#62B6CB"
     ).encode(
         x=alt.X(
-            "Periodo:N",
-            sort=["Por ducha", "Por semana", "Por mes", "Por año"],
-            title=None
+            "Costo_MXN:Q",
+            scale=alt.Scale(type="symlog"),
+            axis=alt.Axis(
+                title="Costo equivalente (MXN)",
+                grid=True,
+                format="$,.0f"
+            )
         ),
         y=alt.Y(
-            "Costo_MXN:Q",
-            title="Dinero equivalente ($ MXN)"
+            "Periodo:N",
+            sort=["Por ducha", "Por semana", "Por mes", "Por año"],
+            axis=alt.Axis(
+                title=None,
+                labelFontSize=12
+            )
         ),
         tooltip=[
             alt.Tooltip("Periodo:N", title="Periodo"),
             alt.Tooltip(
                 "Costo_MXN:Q",
-                title="Costo estimado",
+                title="Costo",
                 format="$,.2f"
             ),
             alt.Tooltip(
@@ -310,9 +336,22 @@ if botellas_anio > 0:
                 format=",.0f"
             )
         ]
+    ).properties(
+        height=190
+    ).configure_view(
+        strokeWidth=0
+    ).configure_axis(
+        gridColor="#E5EDF2",
+        domain=False,
+        tickColor="#E5EDF2"
+    ).configure(
+        background="#F4F8FB"
     )
 
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(
+        chart,
+        use_container_width=True
+    )
 
 st.caption(
     "Nota metodológica: cada litro equivale a dos botellas de 500 ml. "
