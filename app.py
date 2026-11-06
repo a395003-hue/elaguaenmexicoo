@@ -278,16 +278,48 @@ if botellas_anio > 0:
         "Periodo": ["Por ducha", "Por semana", "Por mes", "Por año"],
         "Costo_MXN": [
             costo_ducha, costo_semana, costo_mes, costo_anio
-        ],
+        ],chart = alt.Chart(df_grafica).mark_bar(
+    color="#62B6CB",
+    cornerRadiusTopLeft=6,
+    cornerRadiusTopRight=6,
+    size=45
+).encode(
+    x=alt.X(
+        "Periodo:N",
+        sort=["Por ducha", "Por semana", "Por mes", "Por año"],
+        title=None,
+        axis=alt.Axis(labelAngle=0)
+    ),
+    y=alt.Y(
+        "Costo_MXN:Q",
+        title="Dinero equivalente ($ MXN)",
+        scale=alt.Scale(type="sqrt", zero=True)
+    ),
+    tooltip=[
+        alt.Tooltip("Periodo:N", title="Periodo"),
+        alt.Tooltip(
+            "Costo_MXN:Q",
+            title="Costo estimado",
+            format="$,.2f"
+        ),
+        alt.Tooltip(
+            "Botellas:Q",
+            title="Botellas de 500 ml",
+            format=",.0f"
+        )
+    ]
+).properties(
+    height=350
+)
+
+st.altair_chart(chart, use_container_width=True)
         "Botellas": [
             botellas_ducha, botellas_semana,
             botellas_mes, botellas_anio
         ]
     })
 
-    chart = alt.Chart(df_grafica).mark_bar(
-        color="#62B6CB"
-    ).encode(
+  
         x=alt.X(
             "Periodo:N",
             sort=["Por ducha", "Por semana", "Por mes", "Por año"],
