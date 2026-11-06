@@ -1,6 +1,7 @@
-import pandas as pd
-import streamlit as st
-import altair as alt
+            "El porcentaje de hogares conectados a la red pública",
+            "La cantidad de lluvia de un estado",
+            "El porcentaje de agua embotellada que se consume"
+        ],
         "respuesta": "El porcentaje de hogares conectados a la red pública",
         "explicacion": "La cobertura describe el acceso a la red de agua entubada."
     },
